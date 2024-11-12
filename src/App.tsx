@@ -57,7 +57,7 @@ const App: React.FC = () => {
                             element={<MainPage />}
                         />
                         <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/add-book" element={isAuthenticated ? <AddBookPage /> : <Navigate to="/register" />} />
+                        <Route path="/add-book" element={<AddBookPage />} />
                     </Routes>
                 </div>
             </Router>
