@@ -4,6 +4,8 @@
     import { Book } from "../types";
     import React from "react";
     import { saveCredentials } from "../utils/cookies";
+    import * as r from "ramda";
+
 
     export class BookStore {
         books: Record<string, Book> = {};
@@ -22,20 +24,18 @@
         fetchBooks = async () => {
             try {
                 const headers = generateAuthHeaders("GET", "/books", null);
-                console.log("Headers:", headers);
                 const response = await api.get("/books", { headers });
-                console.log("Books fetched:", response.data.data);
 
-                if(!r.isEmpty(response.data.data) )
-
-                this.books = response.data.data.reduce((acc: Record<string, Book>, item: any) => {
-                    const { id, author, cover, isbn, pages, published, title } = item.book;
-                    const status = item.status;
-                    acc[id] = { id: String(id), author, cover, isbn, pages, published, title, status };
-                    return acc;
-                }, {});
+                if(!r.isEmpty(response.data.data)) {
+                    this.books = response.data.data.reduce((acc: Record<string, Book>, item: any) => {
+                        const { id, author, cover, isbn, pages, published, title } = item.book;
+                        const status = item.status;
+                        acc[id] = { id: String(id), author, cover, isbn, pages, published, title, status };
+                        return acc;
+                    }, {});
+                }
             } catch (error) {
-                console.error("Error fetching books:", error);
+                console.log("Error fetching books:", error);
             }
         };
 
